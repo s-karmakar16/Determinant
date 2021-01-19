@@ -1,0 +1,76 @@
+#include <stdio.h>
+int cofac(int n , int mat[n][n],int temp[n-1][n-1],int p,int q)
+{
+    int i = 0;
+    int j = 0;
+    int row,col;
+    for(row = 0 ; row < n ; row++)
+    {
+        for(col = 0 ; col < n ; col++)
+        {
+            if  (row != p && col != q)
+            {
+                temp[i][j++] = mat[row][col]; 
+            
+                if (col == n-1)
+                {
+                    j=0;
+                    i++;
+                }
+            }
+            else
+            {
+                continue;
+            }
+        }
+    }
+}
+
+int det(int n,int mat[n][n])
+{
+    int S = 0,temp[n-1][n-1],sign = 1,k;
+    if (n == 1)
+    {
+        return mat[0][0];
+    }
+    for(k = 0; k < n; k++)
+    {
+        cofac(n,mat,temp,0,k);
+        S += sign * mat[0][k] * det(n-1,temp);
+        sign = -sign;
+    }
+    return S;
+}
+void disp(int n,int mat[n][n])
+{
+    int i,j;
+    for(i = 0; i < n; i++)
+    {
+        for(j = 0; j < n; j++)
+        {
+            printf(" %d",mat[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+int main()
+{
+    int d,n=3;
+    int A[3][3] = {{1,2,3},{4,5,6},{7,8,10}};
+    printf("\nThe given matrix is: \n");
+    disp(n,A);
+    d=det(n,A);
+    if ( d == 0)
+    {
+        printf("\nDeterminant = 0, not invertible matrix.");
+    }
+    else
+    {
+        printf("\nThe determinant of the matrix is: %d ",d);
+    }
+    return 0;
+}
+
+
+
