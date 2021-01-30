@@ -1,5 +1,6 @@
 #include <stdio.h>
-int cofac(int n , int mat[n][n],int temp[n-1][n-1],int p,int q)
+#include <math.h>
+void cofac(int n , int mat[n][n] , int temp[n-1][n-1] ,int p , int q)
 {
     int i = 0;
     int j = 0;
@@ -26,7 +27,7 @@ int cofac(int n , int mat[n][n],int temp[n-1][n-1],int p,int q)
     }
 }
 
-int det(int n,int mat[n][n])
+int det(int n , int mat[n][n])
 {
     int S = 0,temp[n-1][n-1],sign = 1,k;
     if (n == 1)
@@ -41,7 +42,22 @@ int det(int n,int mat[n][n])
     }
     return S;
 }
-void disp(int n,int mat[n][n])
+
+void adj(int n , int mat[n][n] , float temp[n][n] , int c)
+{
+    int i,j,d,t[n-1][n-1];
+    for (i=0 ; i<n ; i++)
+    {
+        for(j=0 ; j<n ; j++)
+        {
+            cofac(n,mat,t,i,j);
+            d=det(n-1,t);
+            temp[j][i]= pow(-1,i+j)*(d/(float)c);
+        }
+    }
+}
+
+void disp(int n , int mat[n][n])
 {
     int i,j;
     for(i = 0; i < n; i++)
@@ -54,11 +70,25 @@ void disp(int n,int mat[n][n])
     }
 }
 
+void disp1(int n , float mat[n][n])
+{
+    int i,j;
+    for(i = 0; i < n; i++)
+    {
+        for(j = 0; j < n; j++)
+        {
+            printf(" %f",mat[i][j]);
+        }
+        printf("\n");
+    }
+}
+
 int main()
 {
     int d,n=3;
-    int A[3][3] = {{1,2,3},{4,5,6},{7,8,10}};
-    printf("\nThe given matrix is: \n");
+    float ad[3][3];
+    int A[3][3] = {{1,2,3},{4,5,6},{7,8,9}};
+    printf("\nThe given matrix is A: \n");
     disp(n,A);
     d=det(n,A);
     if ( d == 0)
@@ -68,9 +98,11 @@ int main()
     else
     {
         printf("\nThe determinant of the matrix is: %d ",d);
+        adj(n,A,ad,d);
+        printf("\nInverse of the matrix A is: \n");
+        
+        disp1(n,ad);
     }
     return 0;
 }
-
-
 
